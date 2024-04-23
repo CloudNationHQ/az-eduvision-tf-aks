@@ -1,4 +1,4 @@
 locals {
     subscription_id = "your-subscription-id"
-    workload_name = "your-initials"
+    workload_name = "your-initials
 }

@@ -16,6 +16,7 @@ module "aks" {
       zones   = [3]
     }
   }
+
 }
 
 /*
@@ -48,7 +49,7 @@ module "rg" {
 
   groups = {
     demo = {
-      name   = module.naming.resource_group.name
+      name   = module.naming.resource_group.name_unique
       region = "westeurope"
     }
   }
@@ -56,5 +57,5 @@ module "rg" {
 
 module "naming" {
   source = "Azure/naming/azurerm"
-  suffix = ["test"]
+  suffix = [local.workload_name]
 }
