@@ -1,0 +1,11 @@
+apiVersion: approuting.kubernetes.azure.com/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: default
+  #namespace: app-routing-namespace
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  controllerNamePrefix: nginx
+  # controllerNamePrefix: nginx-internal
+  loadBalancerAnnotations: 
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
