@@ -27,8 +27,8 @@ locals {
 
 resource "azurerm_kubernetes_cluster" "default" {
   name                = local.cluster_name
-  location            = module.rg.groups.demo.location
-  resource_group_name = module.rg.groups.demo.name
+  location            = module.rg.groups.default.location
+  resource_group_name = module.rg.groups.default.name
   depends_on          = [azurerm_role_assignment.aks_to_kubelet_id, azurerm_role_assignment.aks_to_vnet]
   linux_profile {
 
@@ -41,7 +41,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   default_node_pool {
     node_count = 1
     name       = "default"
-    vm_size    = "Standard_D2as_v5"
+    vm_size    = "standard_d2as_v5"
     zones      = [3]
     upgrade_settings {
       max_surge = "10%"
@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster" "default" {
     identity_ids = [azurerm_user_assigned_identity.aks.id]
   }
   web_app_routing {
-    dns_zone_id = ""
+    dns_zone_id = azurerm_private_dns_zone.default.id # up to 5, comma separated
   }
   azure_active_directory_role_based_access_control {
     admin_group_object_ids = [data.azurerm_client_config.default.object_id]
@@ -67,4 +67,16 @@ resource "azurerm_kubernetes_cluster" "default" {
     client_id                 = azurerm_user_assigned_identity.aks_kubelet.client_id
     object_id                 = azurerm_user_assigned_identity.aks_kubelet.principal_id
   }
+}
+
+resource "azurerm_private_dns_zone" "default" {
+  name                = "${module.naming.private_dns_zone.name_unique}.local"
+  resource_group_name = module.rg.groups.default.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "default" {
+  name                  = "link-${local.resource_name_suffix}"
+  resource_group_name   = module.rg.groups.default.name
+  private_dns_zone_name = azurerm_private_dns_zone.default.name
+  virtual_network_id    = azurerm_virtual_network.default.id
 }

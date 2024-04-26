@@ -13,7 +13,7 @@ spec:
       paths:
       - backend:
           service:
-            name: ${name}
+            name: ${service_name}
             port:
               number: 80
         path: ${path}

@@ -23,21 +23,21 @@ resource "random_string" "default" {
 data "azurerm_client_config" "default" {
 }
 
-resource "azurerm_resource_group" "default" {
-  name     = "rg-${local.workload_name}-${random_string.default.result}"
-  location = "westeurope"
-}
+# resource "azurerm_resource_group" "default" {
+#   name     = "rg-${local.workload_name}-${random_string.default.result}"
+#   location = "westeurope"
+# }
 
 resource "azurerm_user_assigned_identity" "aks" {
-  location            = azurerm_resource_group.default.location
-  name                = "id-aks-${local.workload_name}-${random_string.default.result}"
-  resource_group_name = azurerm_resource_group.default.name
+  location            = module.rg.groups.default.location
+  name                = module.naming_aks.user_assigned_identity.name_unique
+  resource_group_name = module.rg.groups.default.name
 }
 
 resource "azurerm_user_assigned_identity" "aks_kubelet" {
-  location            = azurerm_resource_group.default.location
-  name                = "id-aks-kubelet-${local.workload_name}-${random_string.default.result}"
-  resource_group_name = azurerm_resource_group.default.name
+  location            = module.rg.groups.default.location
+  name                = module.naming_kubelet.user_assigned_identity.name_unique
+  resource_group_name = module.rg.groups.default.name
 }
 
 # resource "azurerm_log_analytics_workspace" "default" {
@@ -56,8 +56,8 @@ module "kv" {
 
   vault = {
     name          = module.naming.key_vault.name_unique
-    location      = module.rg.groups.demo.location
-    resourcegroup = module.rg.groups.demo.name
+    location      = module.rg.groups.default.location
+    resourcegroup = module.rg.groups.default.name
   }
 }
 
@@ -66,15 +66,11 @@ module "rg" {
   version = "~> 0.7"
 
   groups = {
-    demo = {
+    default = {
       name   = module.naming.resource_group.name_unique
       region = "westeurope"
     }
   }
 }
 
-module "naming" {
-  source = "Azure/naming/azurerm"
-  suffix = [local.workload_name]
-}
 

@@ -3,9 +3,9 @@
 
 
 resource "azurerm_user_assigned_identity" "appgateway" {
-  name                = "id-appgateway-${local.workload_name}-${random_string.default.result}"
-  location            = "westeurope"
-  resource_group_name = azurerm_resource_group.default.name
+  name                = module.naming.user_assigned_identity.name_unique
+  location            = module.rg.groups.default.location
+  resource_group_name = module.rg.groups.default.name
 }
 
 # resource "azurerm_role_assignment" "appgateway_tlsinspection_cert_reader" {
@@ -16,10 +16,9 @@ resource "azurerm_user_assigned_identity" "appgateway" {
 
 
 resource "azurerm_public_ip" "pip" {
-  name = "myAGPublicIPAddress"
-  #domain_name_label   = "jorrit"
-  resource_group_name = azurerm_resource_group.default.name
-  location            = azurerm_resource_group.default.location
+  name                = module.naming.public_ip.name_unique
+  resource_group_name = module.rg.groups.default.name
+  location            = module.rg.groups.default.location
   allocation_method   = "Static"
   sku                 = "Standard"
 }
@@ -34,8 +33,8 @@ locals {
 
 resource "azurerm_application_gateway" "main" {
   name                = module.naming.application_gateway.name_unique
-  resource_group_name = azurerm_resource_group.default.name
-  location            = azurerm_resource_group.default.location
+  resource_group_name = module.rg.groups.default.name
+  location            = module.rg.groups.default.location
 
   sku {
     name     = "Standard_v2"
@@ -72,8 +71,15 @@ resource "azurerm_application_gateway" "main" {
 
   backend_address_pool {
     name = local.backend_address_pool_name
-    #fqdns = ["backend.carlintveld.nl"]
-    # ip_addresses = [azurerm_container_group.aci.ip_address]
+    # Instead of ip_addresses you should use fqdns
+    #fqdns = ["backend.someprivatednszone"]
+    ip_addresses = ["10.0.0.0"]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      backend_address_pool,
+    ]
   }
 
   backend_http_settings {
