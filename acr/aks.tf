@@ -8,8 +8,10 @@ resource "azurerm_kubernetes_cluster" "default" {
   location            = "westeurope"
   resource_group_name = azurerm_resource_group.default.name
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.aks.id]
   }
+
   dns_prefix = local.workload_name
 
   azure_active_directory_role_based_access_control {
@@ -18,20 +20,4 @@ resource "azurerm_kubernetes_cluster" "default" {
     tenant_id              = data.azurerm_client_config.default.tenant_id
     managed                = true
   }
-}
-
-data "azurerm_client_config" "default" {
-
-}
-
-resource "random_string" "default" {
-  length  = 5
-  special = false
-  upper   = false
-  numeric = false
-}
-
-resource "azurerm_resource_group" "default" {
-  name     = "rg-${local.workload_name}-${random_string.default.result}"
-  location = "westeurope"
 }
