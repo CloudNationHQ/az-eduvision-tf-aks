@@ -10,7 +10,7 @@ module "aks" {
     resourcegroup = module.rg.groups.demo.name
     depends_on    = [module.kv]
     profile       = "linux"
-    dns_prefix    = "demo"
+    dns_prefix    = local.workload_name
     default_node_pool = {
       vm_size    = "Standard_D2as_v5"
       zones      = [3]
@@ -44,30 +44,3 @@ az aks create \
     --generate-ssh-key
   */
 
-module "kv" {
-  source  = "cloudnationhq/kv/azure"
-  version = "~> 0.8"
-
-  vault = {
-    name          = module.naming.key_vault.name_unique
-    location      = module.rg.groups.demo.location
-    resourcegroup = module.rg.groups.demo.name
-  }
-}
-
-module "rg" {
-  source  = "cloudnationhq/rg/azure"
-  version = "~> 0.7"
-
-  groups = {
-    demo = {
-      name   = module.naming.resource_group.name
-      region = "westeurope"
-    }
-  }
-}
-
-module "naming" {
-  source = "Azure/naming/azurerm"
-  suffix = ["test"]
-}

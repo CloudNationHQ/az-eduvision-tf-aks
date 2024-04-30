@@ -20,6 +20,7 @@ module "aks" {
       }
     }
     #http_application_routing_enabled = true
+    # Not yet supported in CloudNation module:
     # web_app_routing = {
     #   enabled = true
     # }
