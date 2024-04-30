@@ -2,15 +2,15 @@ locals {
   //SERVICE_ACCOUNT_NAMESPACE = var.namespace_name
 }
 resource "azurerm_user_assigned_identity" "alb_identity" {
-  resource_group_name = module.rg.groups.demo.name
+  resource_group_name = module.rg.groups.default.name
   name                = "id-alb-identity"
   location            = local.location
 }
 
 # documentation: https://learn.microsoft.com/en-us/azure/aks/learn/tutorial-kubernetes-workload-identity
-locals {
-  SERVICE_ACCOUNT_NAME = "alb-identity"
-}
+# locals {
+#   SERVICE_ACCOUNT_NAME = "alb-identity"
+# }
 
 # az identity federated-credential create --name ${FEDERATED_IDENTITY_CREDENTIAL_NAME} --identity-name ${USER_ASSIGNED_IDENTITY_NAME} --resource-group ${RESOURCE_GROUP} --issuer ${AKS_OIDC_ISSUER} --subject system:serviceaccount:${SERVICE_ACCOUNT_NAMESPACE}:${SERVICE_ACCOUNT_NAME}
 resource "azurerm_federated_identity_credential" "alb_identity" {
@@ -20,7 +20,7 @@ resource "azurerm_federated_identity_credential" "alb_identity" {
     "api://AzureADTokenExchange"
   ]
   #resource_group_name = azurerm_resource_group.workload_identity.name
-  resource_group_name = module.rg.groups.demo.name
+  resource_group_name = module.rg.groups.default.name
   #subject             = "system:serviceaccount:${local.SERVICE_ACCOUNT_NAMESPACE}:${local.SERVICE_ACCOUNT_NAME}"
   subject   = "system:serviceaccount:azure-alb-system:alb-controller-sa"
   parent_id = azurerm_user_assigned_identity.alb_identity.id
@@ -51,7 +51,8 @@ resource "azurerm_role_assignment" "alb_manager" {
 }
 
 resource "azurerm_role_assignment" "network_contributor" {
-  scope                = azurerm_subnet.alb.id
+  count                = length(azurerm_subnet.alb) > 0 ? 1 : 0
+  scope                = azurerm_subnet.alb[0].id
   role_definition_name = "Network Contributor"
   principal_id         = azurerm_user_assigned_identity.alb_identity.principal_id
 }

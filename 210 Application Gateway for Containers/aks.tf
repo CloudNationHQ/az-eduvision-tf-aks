@@ -6,8 +6,8 @@ module "aks" {
 
   cluster = {
     name          = module.naming.kubernetes_cluster.name_unique
-    location      = module.rg.groups.demo.location
-    resourcegroup = module.rg.groups.demo.name
+    location      = module.rg.groups.default.location
+    resourcegroup = module.rg.groups.default.name
     depends_on    = [module.kv]
     profile       = "linux"
     dns_prefix    = local.workload_name

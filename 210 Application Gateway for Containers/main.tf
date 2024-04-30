@@ -4,8 +4,8 @@ module "kv" {
 
   vault = {
     name          = module.naming.key_vault.name_unique
-    location      = module.rg.groups.demo.location
-    resourcegroup = module.rg.groups.demo.name
+    location      = module.rg.groups.default.location
+    resourcegroup = module.rg.groups.default.name
   }
 }
 
@@ -14,7 +14,7 @@ module "rg" {
   version = "~> 0.7"
 
   groups = {
-    demo = {
+    default = {
       name   = module.naming.resource_group.name
       region = "westeurope"
     }
