@@ -70,7 +70,7 @@ terraform plan -out=plan.out
 terraform show -json plan.out > plan.json
 ```
 
-### Kuberctl
+### ctl
 
 Auto Completion
 bash:
