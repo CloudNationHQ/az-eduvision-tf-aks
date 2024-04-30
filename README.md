@@ -27,7 +27,9 @@ az aks get-credentials --resource-group $resourceGroup --name $clusterName --ove
 ### Terraform
 
 set terraform alias
+
 linux / mac
+
 Add this to your `~/.bashrc` or `~/.zshrc` file
 ```
 #terraform alias
