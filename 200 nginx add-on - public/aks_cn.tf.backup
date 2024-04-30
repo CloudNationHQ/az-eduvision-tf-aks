@@ -1,0 +1,28 @@
+module "aks" {
+  source  = "cloudnationhq/aks/azure"
+  version = "~> 0.8"
+
+  keyvault = module.kv.vault.id
+
+  cluster = {
+    name          = module.naming.kubernetes_cluster.name_unique
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
+    depends_on    = [module.kv]
+    profile       = "linux"
+    #dns_prefix    = local.workload_name
+    dns_prefix = "demo"
+    default_node_pool = {
+      vm_size = "Standard_D2as_v5"
+      zones   = [3]
+      upgrade_settings = {
+        max_surge = "10%"
+      }
+    }
+    #http_application_routing_enabled = true
+    # Not yet supported in CloudNation module:
+    # web_app_routing = {
+    #   enabled = true
+    # }
+  }
+}

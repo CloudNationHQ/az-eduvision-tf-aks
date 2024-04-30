@@ -10,9 +10,9 @@
 # }
 
 provider "kubernetes" {
-  host = module.aks.cluster.kube_config.0.host
+  host = azurerm_kubernetes_cluster.default.kube_config.0.host
   cluster_ca_certificate = base64decode(
-    module.aks.cluster.kube_config[0].cluster_ca_certificate,
+    azurerm_kubernetes_cluster.default.kube_config[0].cluster_ca_certificate,
   )
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
@@ -27,8 +27,7 @@ provider "kubernetes" {
   }
 }
 
-resource "kubernetes_namespace" "default" {
-  metadata {
-    name = "example"
-  }
+module "kubernetes" {
+  source = "./kubernetes"
+  aks    = azurerm_kubernetes_cluster.default
 }

@@ -1,3 +1,10 @@
+
+resource "kubernetes_namespace" "default" {
+  metadata {
+    name = "example"
+  }
+}
+
 resource "kubernetes_service" "name" {
   for_each = toset(["blue", "green"])
   metadata {
@@ -14,8 +21,6 @@ resource "kubernetes_service" "name" {
     }
   }
 }
-
-
 
 resource "kubernetes_deployment" "default" {
   for_each = toset(["blue", "green"])
