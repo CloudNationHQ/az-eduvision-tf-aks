@@ -12,7 +12,11 @@ az login --use-device-code --tenant $your-tenant
 
 Setting the correct subscription
 ```
-az account set --subscription $subscriptio-name
+az account set --subscription $subscription-name
+```
+or
+```
+az account set --subscription $subscription-id
 ```
 
 Merging AKS credentials in current Kube config
