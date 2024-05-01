@@ -8,7 +8,7 @@ az network vnet subnet create \
   */
 
 resource "azurerm_subnet" "alb" {
-  count               = length(data.azurerm_resources.vnet.resources) > 0 ? 1 : 0
+  # count               = length(data.azurerm_resources.vnet.resources) > 0 ? 1 : 0
   name                = "subnet-alb"
   resource_group_name = module.aks.cluster.node_resource_group
   address_prefixes    = ["10.225.0.0/16"]

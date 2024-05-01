@@ -15,7 +15,7 @@ module "rg" {
 
   groups = {
     default = {
-      name   = module.naming.resource_group.name
+      name   = module.naming.resource_group.name_unique
       region = "westeurope"
     }
   }

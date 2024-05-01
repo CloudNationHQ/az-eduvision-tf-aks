@@ -4,5 +4,5 @@ module "kubernetes" {
   source                 = "./kubernetes"
   aks                    = module.aks.cluster
   alb_identity_client_id = azurerm_user_assigned_identity.alb_identity.client_id
-  alb_subnet_id          = azurerm_subnet.alb[0].id
+  alb_subnet_id          = azurerm_subnet.alb.id
 }

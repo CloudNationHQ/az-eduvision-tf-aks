@@ -52,7 +52,7 @@ resource "azurerm_role_assignment" "alb_manager" {
 
 resource "azurerm_role_assignment" "network_contributor" {
   count                = length(azurerm_subnet.alb) > 0 ? 1 : 0
-  scope                = azurerm_subnet.alb[0].id
+  scope                = azurerm_subnet.alb.id
   role_definition_name = "Network Contributor"
   principal_id         = azurerm_user_assigned_identity.alb_identity.principal_id
 }
