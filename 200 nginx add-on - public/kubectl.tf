@@ -27,10 +27,6 @@ provider "kubectl" {
   }
 }
 
-# resource "kubectl_manifest" "default_ingress_controller" {
-#   yaml_body = file("${path.module}/manifests/ingress-controller-default.yaml")
-# }
-
 terraform {
   required_providers {
     kubectl = {

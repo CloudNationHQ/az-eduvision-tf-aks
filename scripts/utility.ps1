@@ -1,6 +1,8 @@
 function aks-get-credentials_ {
-    az aks get-credentials --resource-group "resource-group" --name "aks-cluster-name" --admin
-    kubelogin convert-kubeconfig -l azurecli
+    # Only works with local accounts enabled:
+    # az aks get-credentials --resource-group "resource-group" --name "aks-cluster-name" --admin
+    az aks get-credentials --resource-group "resource-group" --name "aks-cluster-name" --subscription "subscription-id"
+    kubelogin convert-kubeconfig --login azurecli
 }
 
 function push-docker-image_ {

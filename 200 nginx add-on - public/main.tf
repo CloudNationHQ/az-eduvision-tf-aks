@@ -42,6 +42,7 @@ module "kv" {
 }
 
 resource "time_sleep" "default" {
+  depends_on      = [module.kv]
   create_duration = "15s"
 }
 
