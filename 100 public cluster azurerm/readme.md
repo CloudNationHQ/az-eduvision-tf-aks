@@ -1,4 +1,4 @@
-# Example 100 public cluster azurerm
+# Exercise 100 public cluster azurerm
 ## Goal of this exercise
 This exercise will provision a public Azure Kubernetes Service cluster using the azurerm provider resource.
 

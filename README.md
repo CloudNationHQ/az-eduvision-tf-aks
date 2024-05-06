@@ -1,5 +1,8 @@
 # eduvision-tf-aks
 
+## General preparation in every example
+Copy `environment.tf.example` to `environment.tf` and provide your own personal settings.
+
 ## Cheat Sheet
 
 ### AZ Cli Tips

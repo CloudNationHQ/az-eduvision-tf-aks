@@ -1,4 +1,4 @@
-# Example 100 public cluster cn module
+# Exercise 100 public cluster cn module
 ## Goal of this exercise
 This exercise will provision a public Azure Kubernetes Service cluster using the CloudNation module.
 

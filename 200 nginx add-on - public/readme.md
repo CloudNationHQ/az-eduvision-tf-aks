@@ -1,4 +1,4 @@
-# Example 200 nginx add-on - public
+# Exercise 200 nginx add-on - public
 ## Goal of this exercise
 This exercise will provision a public Azure Kubernetes Service cluster and enables the application routing add-on.
 
