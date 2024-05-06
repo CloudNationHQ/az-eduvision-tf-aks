@@ -1,5 +1,5 @@
 # Exercise 300 private cluster
-## Goal of dit exercise
+## Goal of this exercise
 This exercise will provision a Azure Kubernetes Service cluster with the API server a private IP assigned from the subnet.
 
 ## Steps

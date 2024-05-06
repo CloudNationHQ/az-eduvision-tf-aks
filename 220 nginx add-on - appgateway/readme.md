@@ -1,5 +1,5 @@
 # Exercise 220 nginx add-on - appgateway
-## Goal of dit exercise
+## Goal of this exercise
 This exercise will provision a public Azure Kubernetes Service cluster, enables the application routing add-on and adds an application gateway.
 
 ## Steps
