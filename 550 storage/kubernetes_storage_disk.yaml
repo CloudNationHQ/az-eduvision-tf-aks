@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: storage-disk-example
+spec:
+  containers:
+    - name: myfrontend
+      #image: mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine
+      image: nginx:alpine
+      volumeMounts:
+      - mountPath: "/mnt/azure"
+        name: volume
+  volumes:
+    - name: volume
+      persistentVolumeClaim:
+        claimName: pvc-azuredisk
