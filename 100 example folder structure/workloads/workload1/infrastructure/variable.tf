@@ -1,0 +1,3 @@
+variable "mysetting" {
+  type = string
+}
