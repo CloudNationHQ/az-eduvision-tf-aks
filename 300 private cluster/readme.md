@@ -9,7 +9,7 @@ This exercise will provision a Azure Kubernetes Service cluster with the API ser
 
 ## Things you can try
 * Review the API server address that it is a private ip
-* Run `command invoke` to manage the cluster
+* Run `az aks command invoke` to manage the cluster (note it can take ~10 minutes before your role assignment takes effect)
 * Do note that there is still a public ip. This is because the API server lives in the host control plane (HCP) and there must be a route from your subnet to the HCP.
 * Vnet integration is currently in public preview. You can try this out. You will notice that a public ip is not required anymore. 
 * If you desire to use generally available features and leave out the public ip you can go for user defined routes.
