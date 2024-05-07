@@ -59,3 +59,9 @@ resource "azurerm_private_dns_zone" "aks" {
 #   #   type = "SystemAssigned"
 #   # }
 # }
+
+resource "azurerm_role_assignment" "aks_admin" {
+  role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
+  scope                = module.aks.aks_id
+  principal_id         = data.azurerm_client_config.default.object_id
+}
