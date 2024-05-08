@@ -61,6 +61,18 @@ module "kv" {
   }
 }
 
+resource "time_sleep" "key_vault_delay" {
+  depends_on      = [module.kv]
+  create_duration = "30s"
+}
+
+resource "terraform_data" "key_vault" {
+  depends_on = [time_sleep.key_vault_delay]
+  input = {
+    key_vault = module.kv.vault
+  }
+}
+
 module "rg" {
   source  = "cloudnationhq/rg/azure"
   version = "~> 0.7"
@@ -68,7 +80,7 @@ module "rg" {
   groups = {
     default = {
       name   = module.naming.resource_group.name_unique
-      region = "westeurope"
+      region = local.location
     }
   }
 }

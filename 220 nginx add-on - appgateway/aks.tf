@@ -6,13 +6,13 @@ resource "tls_private_key" "tls_key" {
 resource "azurerm_key_vault_secret" "tls_public_key_secret" {
   name         = format("%s-%s-%s", "kvs", local.cluster_name, "pub")
   value        = tls_private_key.tls_key.public_key_openssh
-  key_vault_id = module.kv.vault.id
+  key_vault_id = terraform_data.key_vault.output.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "tls_private_key_secret" {
   name         = format("%s-%s-%s", "kvs", local.cluster_name, "prv")
   value        = tls_private_key.tls_key.private_key_pem
-  key_vault_id = module.kv.vault.id
+  key_vault_id = terraform_data.key_vault.output.key_vault.id
 }
 
 resource "azurerm_role_assignment" "aks_to_kubelet_id" {
@@ -66,6 +66,12 @@ resource "azurerm_kubernetes_cluster" "default" {
     user_assigned_identity_id = azurerm_user_assigned_identity.aks_kubelet.id
     client_id                 = azurerm_user_assigned_identity.aks_kubelet.client_id
     object_id                 = azurerm_user_assigned_identity.aks_kubelet.principal_id
+  }
+  network_profile {
+    network_plugin = "azure"
+    # overlay support for application gateway for containers is not yet supported. 
+    # if enabled, this results in the error: "no healthy upstream"
+    network_plugin_mode = "overlay"
   }
 }
 

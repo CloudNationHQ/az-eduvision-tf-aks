@@ -1,9 +1,16 @@
 module "kubernetes" {
-  source = "./kubernetes"
+  source                           = "./kubernetes"
+  private_ingress_endpoint_enabled = local.private_ingress_endpoint_enabled
+  private_ingress_endpoint_ip      = "10.1.8.8"
+}
+
+resource "time_sleep" "nginx_addon" {
+  create_duration = "30s"
+  depends_on      = [azurerm_role_assignment.aks_admin]
 }
 
 resource "terraform_data" "kubernetes" {
-  depends_on = [azurerm_role_assignment.aks_admin]
+  depends_on = [time_sleep.nginx_addon]
   input      = azurerm_kubernetes_cluster.default
 }
 

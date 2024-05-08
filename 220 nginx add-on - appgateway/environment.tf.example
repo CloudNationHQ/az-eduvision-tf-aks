@@ -1,4 +1,6 @@
 locals {
     subscription_id = "your-subscription-id"
     workload_name = "your-initials"
+    location = "westeurope"
+    private_ingress_endpoint_enabled = false
 }
