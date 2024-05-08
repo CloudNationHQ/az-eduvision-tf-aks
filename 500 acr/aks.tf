@@ -24,4 +24,11 @@ resource "azurerm_kubernetes_cluster" "default" {
     tenant_id              = data.azurerm_client_config.default.tenant_id
     managed                = true
   }
+
+  kubelet_identity {
+    client_id                 = azurerm_user_assigned_identity.aks.client_id
+    object_id                 = azurerm_user_assigned_identity.aks.principal_id
+    user_assigned_identity_id = azurerm_user_assigned_identity.aks.id
+  }
 }
+
