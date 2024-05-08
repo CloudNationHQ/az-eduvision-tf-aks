@@ -25,3 +25,15 @@ resource "azurerm_role_assignment" "aks_to_acr" {
   role_definition_name = "AcrPull"
   scope                = azurerm_container_registry.default.id
 }
+
+module "rg" {
+  source  = "cloudnationhq/rg/azure"
+  version = "~> 0.7"
+
+  groups = {
+    default = {
+      name   = module.naming.resource_group.name_unique
+      region = "westeurope"
+    }
+  }
+}

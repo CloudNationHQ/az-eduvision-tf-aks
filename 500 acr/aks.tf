@@ -1,12 +1,16 @@
+locals {
+  cluster_name = module.naming.kubernetes_cluster.name_unique
+}
+
 resource "azurerm_kubernetes_cluster" "default" {
-  name = "aks-${local.workload_name}-${random_string.default.result}"
+  name = local.cluster_name
   default_node_pool {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_D2as_v5"
   }
   location            = "westeurope"
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = module.rg.groups.default.name
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.aks.id]
