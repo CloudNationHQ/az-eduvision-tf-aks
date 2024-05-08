@@ -8,9 +8,10 @@ This exercise will provision a public Azure Kubernetes Service cluster and adds 
 3. Run `terraform apply`
 
 ## Things you can try
-* Verify that the application load balancer has been created
-* Add a listener, add ingress configuration, get the blue/green endpoints running
+* Verify that the application load balancer and frontend have been created
+* Take the frontend fqdn and go to http://frontend-fqdn/blue and http://frontend-fqdn/green to verify the blue/green endpoints are running
 * Experiment with the "bring your own" model.
 
 ## References
 * https://learn.microsoft.com/en-us/azure/application-gateway/for-containers/overview
+* https://learn.microsoft.com/en-us/azure/application-gateway/for-containers/how-to-traffic-splitting-gateway-api?tabs=alb-managed

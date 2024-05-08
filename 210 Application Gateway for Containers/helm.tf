@@ -13,7 +13,12 @@ resource "helm_release" "alb" {
   #version = "1.0.0"
   set {
     name  = "albController.podIdentity.clientID"
-    value = var.alb_identity_client_id
+    value = azurerm_user_assigned_identity.alb_identity.client_id
   }
   #depends_on = [azurerm_role_assignment.aks_to_public_ip_reader, azurerm_role_assignment.aks_to_public_ip_network_contributor]
+}
+
+moved {
+  from = module.kubernetes[0].helm_release.alb
+  to   = helm_release.alb
 }
