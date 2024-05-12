@@ -35,7 +35,7 @@ data "azurerm_client_config" "default" {
 
 resource "azurerm_resource_group" "default" {
   name     = "rg-${local.workload_name}-${random_string.default.result}"
-  location = "westeurope"
+  location = local.location
 }
 
 resource "azurerm_user_assigned_identity" "default" {
@@ -45,7 +45,7 @@ resource "azurerm_user_assigned_identity" "default" {
 }
 
 resource "azurerm_private_dns_zone" "aks" {
-  name                = "privatelink.westeurope.azmk8s.io"
+  name                = "privatelink.${local.location}.azmk8s.io"
   resource_group_name = azurerm_resource_group.default.name
 }
 

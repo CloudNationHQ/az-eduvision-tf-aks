@@ -69,7 +69,7 @@ resource "time_sleep" "key_vault_delay" {
 resource "terraform_data" "key_vault" {
   depends_on = [time_sleep.key_vault_delay]
   input = {
-    key_vault = module.kv.vault
+    key_vault_id = module.kv.vault.id
   }
 }
 

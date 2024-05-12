@@ -61,10 +61,16 @@ module "kv" {
   }
 }
 
-resource "azurerm_key_vault_secret" "example" {
-  key_vault_id = module.kv.vault.id
-  name         = "example"
-  value        = "mysecret"
+resource "time_sleep" "key_vault_delay" {
+  depends_on      = [module.kv]
+  create_duration = "30s"
+}
+
+resource "terraform_data" "key_vault" {
+  depends_on = [time_sleep.key_vault_delay]
+  input = {
+    key_vault_id = module.kv.vault.id
+  }
 }
 
 module "rg" {

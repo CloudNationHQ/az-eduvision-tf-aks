@@ -45,5 +45,5 @@ resource "azurerm_kubernetes_cluster_node_pool" "default" {
 
 resource "terraform_data" "kubernetes" {
   depends_on = [azurerm_role_assignment.aks_admin]
-  input      = azurerm_kubernetes_cluster.default
+  input      = azurerm_kubernetes_cluster.default.kube_config
 }

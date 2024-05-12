@@ -8,7 +8,7 @@ module "kubernetes" {
 
 resource "terraform_data" "kubernetes" {
   depends_on = [azurerm_role_assignment.aks_admin]
-  input      = azurerm_kubernetes_cluster.default
+  input      = azurerm_kubernetes_cluster.default.kube_config
 }
 
 
@@ -26,9 +26,9 @@ resource "terraform_data" "kubernetes" {
 
 provider "kubectl" {
   load_config_file = false
-  host             = terraform_data.kubernetes.output.kube_config.0.host
+  host             = terraform_data.kubernetes.output.0.host
   cluster_ca_certificate = base64decode(
-    terraform_data.kubernetes.output.kube_config[0].cluster_ca_certificate,
+    terraform_data.kubernetes.output.0.cluster_ca_certificate,
   )
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
@@ -53,15 +53,15 @@ terraform {
 }
 
 output "name" {
-  value = terraform_data.kubernetes.output.kube_config.0.host
+  value = terraform_data.kubernetes.output.0.host
 }
 
 provider "kubernetes" {
   #host = module.aks.cluster.kube_config.0.host
-  host = terraform_data.kubernetes.output.kube_config.0.host
+  host = terraform_data.kubernetes.output.0.host
   cluster_ca_certificate = base64decode(
     #module.aks.cluster.kube_config[0].cluster_ca_certificate,
-    terraform_data.kubernetes.output.kube_config[0].cluster_ca_certificate,
+    terraform_data.kubernetes.output.0.cluster_ca_certificate,
   )
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"

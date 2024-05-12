@@ -1,8 +1,8 @@
 provider "kubectl" {
   load_config_file = false
-  host             = terraform_data.kubernetes.output.kube_config.0.host
+  host             = terraform_data.kubernetes.output.0.host
   cluster_ca_certificate = base64decode(
-    terraform_data.kubernetes.output.kube_config[0].cluster_ca_certificate,
+    terraform_data.kubernetes.output.0.cluster_ca_certificate,
   )
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"

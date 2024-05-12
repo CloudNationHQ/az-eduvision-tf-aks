@@ -6,13 +6,13 @@ resource "tls_private_key" "tls_key" {
 resource "azurerm_key_vault_secret" "tls_public_key_secret" {
   name         = join("-", ["kvs", local.cluster_name, "pub"])
   value        = tls_private_key.tls_key.public_key_openssh
-  key_vault_id = terraform_data.default.output.key_vault.id
+  key_vault_id = terraform_data.default.output.key_vault_id
 }
 
 resource "azurerm_key_vault_secret" "tls_private_key_secret" {
   name         = join("-", ["kvs", local.cluster_name, "prv"])
   value        = tls_private_key.tls_key.private_key_pem
-  key_vault_id = terraform_data.default.output.key_vault.id
+  key_vault_id = terraform_data.default.output.key_vault_id
 }
 
 locals {
