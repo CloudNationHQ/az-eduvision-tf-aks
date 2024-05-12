@@ -73,6 +73,12 @@ resource "terraform_data" "key_vault" {
   }
 }
 
+resource "azurerm_key_vault_secret" "example" {
+  key_vault_id = terraform_data.key_vault.output.key_vault_id
+  name         = "example"
+  value        = "mysecret"
+}
+
 module "rg" {
   source  = "cloudnationhq/rg/azure"
   version = "~> 0.7"
