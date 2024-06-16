@@ -9,7 +9,7 @@ resource "azurerm_kubernetes_cluster" "default" {
     node_count = 1
     vm_size    = "Standard_D2as_v5"
   }
-  location            = "westeurope"
+  location            = module.rg.groups.default.location
   resource_group_name = module.rg.groups.default.name
   identity {
     type         = "UserAssigned"
@@ -26,9 +26,13 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
 
   kubelet_identity {
-    client_id                 = azurerm_user_assigned_identity.aks.client_id
-    object_id                 = azurerm_user_assigned_identity.aks.principal_id
-    user_assigned_identity_id = azurerm_user_assigned_identity.aks.id
+    client_id                 = azurerm_user_assigned_identity.aks_kubelet.client_id
+    object_id                 = azurerm_user_assigned_identity.aks_kubelet.principal_id
+    user_assigned_identity_id = azurerm_user_assigned_identity.aks_kubelet.id
   }
+  depends_on = [
+    azurerm_role_assignment.aks_to_acr,
+    azurerm_role_assignment.aks_to_kubelet_identity
+  ]
 }
 

@@ -26,6 +26,12 @@ resource "azurerm_role_assignment" "aks_to_acr" {
   scope                = azurerm_container_registry.default.id
 }
 
+resource "azurerm_role_assignment" "aks_to_kubelet_identity" {
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
+  role_definition_name = "Managed Identity Operator"
+  scope                = azurerm_user_assigned_identity.aks_kubelet.id
+}
+
 module "rg" {
   source  = "cloudnationhq/rg/azure"
   version = "~> 0.7"
@@ -33,7 +39,7 @@ module "rg" {
   groups = {
     default = {
       name   = module.naming.resource_group.name_unique
-      region = "westeurope"
+      region = local.location
     }
   }
 }
